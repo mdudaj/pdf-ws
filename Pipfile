@@ -5,8 +5,11 @@ name = "pypi"
 
 [packages]
 qrcode = "*"
-pypdf2 = "*"
+pypdf2 = "<3.0.0"
 reportlab = "*"
+isort = "*"
+black = "*"
+img2pdf = "*"
 
 [dev-packages]
 
