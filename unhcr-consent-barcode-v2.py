@@ -29,47 +29,46 @@ slab.setFillColorRGB(0, 0, 0)
 # Create an output PDF object
 output = PdfFileWriter()
 
-# Read the existing PDF
-existing_pdf = PdfFileReader(open("UNHCR-Study-CONSENT-FORM.pdf", "rb"))
+# Open the existing PDF file
+with open("UNHCR-Study-CONSENT-FORM.pdf", "rb") as existing_pdf_file:
+    # Read the existing PDF
+    existing_pdf = PdfFileReader(existing_pdf_file)
 
-# Loop through all barcode numbers and add them to the output PDF
-for barcode_num in range(BARCODE_START_NUM, BARCODE_END_NUM+1):
-    
-    # Generate the barcode code
-    barcode_code = f"{BARCODE_PREFIX}{barcode_num:06}"
-    
-    # Generate the barcode
-    barcode = code128.Code128(barcode_code, humanReadable=True, barHeight=barcode_height, barWidth=barcode_width)
-    
-    # Draw the barcode on the canvas
-    barcode.drawOn(slab, x_var * mm, y_var * mm)
-    
-    # Save the canvas object
-    slab.save()
-    
-    # Move the buffer to the beginning
-    packet.seek(0)
-    
-    # Create a PDF object with the generated barcode
-    new_pdf = PdfFileReader(packet)
-    
-    # Add the barcode to all pages of the existing PDF
-    for i in range(existing_pdf.getNumPages()):
-        page = existing_pdf.getPage(i)
-        page.mergePage(new_pdf.getPage(0))
-        output.addPage(page)
-    
-    # Reset the buffer
-    packet = BytesIO()
-    
-    # Reset the canvas object
-    slab = canvas.Canvas(packet, pagesize=A4)
-    
-    # Set font color to black
-    slab.setFillColorRGB(0, 0, 0)
-
-# Close the existing PDF file
-existing_pdf.close()
+    # Loop through all barcode numbers and add them to the output PDF
+    for barcode_num in range(BARCODE_START_NUM, BARCODE_END_NUM+1):
+        
+        # Generate the barcode code
+        BARCODE_CODE = f"{BARCODE_PREFIX}{barcode_num:06}"
+        
+        # Generate the barcode
+        barcode = code128.Code128(BARCODE_CODE, humanReadable=True, barHeight=barcode_height, barWidth=barcode_width)
+        
+        # Draw the barcode on the canvas
+        barcode.drawOn(slab, x_var * mm, y_var * mm)
+        
+        # Save the canvas object
+        slab.save()
+        
+        # Move the buffer to the beginning
+        packet.seek(0)
+        
+        # Create a PDF object with the generated barcode
+        new_pdf = PdfFileReader(packet)
+        
+        # Add the barcode to all pages of the existing PDF
+        for i in range(existing_pdf.getNumPages()):
+            page = existing_pdf.getPage(i)
+            page.mergePage(new_pdf.getPage(0))
+            output.addPage(page)
+        
+        # Reset the buffer
+        packet = BytesIO()
+        
+        # Reset the canvas object
+        slab = canvas.Canvas(packet, pagesize=A4)
+        
+        # Set font color to black
+        slab.setFillColorRGB(0, 0, 0)
 
 # Write the output PDF to a file
 outputStream = open("UNHCR-Study-CONSENT-FORM-WITH-CODE128.pdf", "wb")
