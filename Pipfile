@@ -10,6 +10,7 @@ reportlab = "*"
 isort = "*"
 black = "*"
 img2pdf = "*"
+pylabels = "*"
 
 [dev-packages]
 
