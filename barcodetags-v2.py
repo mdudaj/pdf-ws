@@ -11,7 +11,7 @@ specs = labels.Specification(210, 297, 5, 13, 37.5, 21.2, corner_radius=2)
 
 # Define starting and ending barcode codes
 STARTING_CODE = 230001
-ENDING_CODE = 231100
+ENDING_CODE = 231200
 
 # Set barcode dimensions
 barcode_height = 50
